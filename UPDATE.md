@@ -37,15 +37,25 @@ push されると GitHub Actions が GitHub Pages を自動再デプロイしま
    - `summary` は事実ベースで2〜4文。憶測や煽りは避ける。
    - `url` は実在する出典ページを入れる（存在しないURLを作らない）。
 
-5. **コミット & push**
+5. **まとめ画像を生成**
    ```
-   git add data/news.js
+   node scripts/render-summary.js
+   ```
+   → `data/summary.png`（最新）と `data/archive/summary-YYYY-MM-DD.png`（アーカイブ）が生成される。
+
+6. **コミット & push**
+   ```
+   git add data/news.js data/summary.png data/archive/
    git commit -m "chore: [YYYY-MM-DD] 経済ニュースを更新"
    git push -u origin claude/japan-world-economics-news-kjasrf
    ```
    （ネットワークエラー時は 2s/4s/8s/16s のバックオフで最大4回リトライ）
 
-6. **PRは作らない**（明示的な依頼がない限り）。データ更新のpushのみでよい。
+7. **まとめ画像をスマホへ送信**
+   `SendUserFile` で `data/summary.png` を送る（`status: "proactive"` にするとスマホに通知が届く）。
+   caption には日付と主要な見出しを1〜2行添える。
+
+8. **PRは作らない**（明示的な依頼がない限り）。データ更新のpushのみでよい。
 
 ## 注意
 

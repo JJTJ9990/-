@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>今朝の経済ニュース</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+        "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .poster {
+      width: 1080px;
+      background: radial-gradient(1200px 600px at 15% -10%, #16385f 0%, transparent 55%),
+                  linear-gradient(160deg, #0a1526 0%, #0d1c33 55%, #0a1220 100%);
+      color: #eaf0f7;
+      padding: 56px 56px 44px;
+    }
+
+    /* Header */
+    .head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 30px; }
+    .head .title { font-size: 52px; font-weight: 800; letter-spacing: .01em; line-height: 1.1; }
+    .head .title .mk { font-size: 46px; margin-right: 10px; }
+    .head .date { text-align: right; color: #9fb6d4; font-size: 22px; font-weight: 600; line-height: 1.5; }
+    .head .date .big { display: block; font-size: 30px; color: #dbe6f5; font-weight: 800; }
+
+    /* Ticker */
+    .ticker {
+      display: flex; flex-wrap: wrap; gap: 14px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 18px 22px;
+      margin-bottom: 34px;
+    }
+    .tk { display: flex; align-items: baseline; gap: 10px; padding: 4px 6px; }
+    .tk .n { color: #8ea8c9; font-size: 20px; }
+    .tk .v { font-size: 24px; font-weight: 800; color: #fff; }
+    .tk .c { font-size: 20px; font-weight: 700; }
+    .tk .c.up { color: #ff6b74; }     /* 日本式: 上昇=赤 */
+    .tk .c.down { color: #4fd07f; }   /* 日本式: 下落=緑 */
+    .tk .c.flat { color: #b9c4d4; }
+    .tk .sep { width: 1px; align-self: stretch; background: rgba(255,255,255,.12); margin: 0 4px; }
+
+    /* Categories */
+    .cat { margin-bottom: 30px; }
+    .cat-head {
+      display: flex; align-items: center; gap: 12px;
+      padding-bottom: 12px; margin-bottom: 16px;
+      border-bottom: 2px solid rgba(255,255,255,.12);
+    }
+    .cat-head .ic { font-size: 30px; }
+    .cat-head .t { font-size: 30px; font-weight: 800; color: #cfe0f5; }
+    .item { display: flex; gap: 16px; padding: 12px 0; }
+    .item + .item { border-top: 1px solid rgba(255,255,255,.06); }
+    .item .bullet {
+      flex: 0 0 auto; margin-top: 8px;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #4c9aff;
+    }
+    .item .body { flex: 1; }
+    .item .hl { font-size: 27px; font-weight: 700; line-height: 1.45; color: #f2f6fc; }
+    .item .meta { margin-top: 6px; font-size: 19px; color: #93a6c2; }
+    .item .chip {
+      display: inline-block; font-size: 17px; font-weight: 700;
+      color: #bcd0ee; background: rgba(76,154,255,.16);
+      border-radius: 7px; padding: 1px 10px; margin-right: 10px;
+    }
+
+    /* Footer */
+    .foot {
+      margin-top: 8px; padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      display: flex; justify-content: space-between; align-items: center;
+      color: #7f93b3; font-size: 19px;
+    }
+    .foot .brand { font-weight: 700; color: #9fb6d4; }
+  </style>
+</head>
+<body>
+  <div class="poster" id="poster">
+    <div class="head">
+      <div class="title"><span class="mk">📊</span>今朝の経済ニュース</div>
+      <div class="date" id="date"></div>
+    </div>
+    <div class="ticker" id="ticker"></div>
+    <div id="cats"></div>
+    <div class="foot">
+      <span class="brand">経済ニュース ダッシュボード</span>
+      <span id="foot-note">公開情報の要約 / 投資判断は自己責任で</span>
+    </div>
+  </div>
+
+  <script src="data/news.js"></script>
+  <script>
+    (function () {
+      var d = window.NEWS_DATA || {};
+      function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+      // 日付
+      try {
+        var dt = new Date(d.updated_at);
+        var days = ["日","月","火","水","木","金","土"];
+        document.getElementById("date").innerHTML =
+          '<span class="big">' + dt.getFullYear() + "年" + (dt.getMonth()+1) + "月" + dt.getDate() + "日(" + days[dt.getDay()] + ")</span>" +
+          String(dt.getHours()).padStart(2,"0") + ":" + String(dt.getMinutes()).padStart(2,"0") + " 時点";
+      } catch(e){}
+
+      // ティッカー
+      var tk = document.getElementById("ticker");
+      (d.market_snapshot || []).forEach(function(m, i){
+        if (i > 0) { var s = document.createElement("div"); s.className = "sep"; tk.appendChild(s); }
+        var dir = m.dir || "flat";
+        var arrow = dir === "up" ? "▲" : dir === "down" ? "▼" : "—";
+        var el = document.createElement("div");
+        el.className = "tk";
+        el.innerHTML = '<span class="n">' + esc(m.name) + '</span>' +
+          '<span class="v">' + esc(m.value) + '</span>' +
+          '<span class="c ' + dir + '">' + arrow + " " + esc(m.change) + '</span>';
+        tk.appendChild(el);
+      });
+
+      // カテゴリ（各カテゴリ上位3件）
+      var wrap = document.getElementById("cats");
+      (d.categories || []).forEach(function(c){
+        var sec = document.createElement("div");
+        sec.className = "cat";
+        var items = (c.items || []).slice(0, 3);
+        var html = '<div class="cat-head"><span class="ic">' + esc(c.icon || "📰") +
+          '</span><span class="t">' + esc(c.title) + '</span></div>';
+        items.forEach(function(it){
+          html += '<div class="item"><span class="bullet"></span><div class="body">' +
+            '<div class="hl">' + esc(it.headline) + '</div>' +
+            '<div class="meta">' +
+              (it.region ? '<span class="chip">' + esc(it.region) + '</span>' : '') +
+              esc(it.source || "") + (it.date ? " ・ " + esc(it.date) : "") +
+            '</div></div></div>';
+        });
+        sec.innerHTML = html;
+        wrap.appendChild(sec);
+      });
+    })();
+  </script>
+</body>
+</html>

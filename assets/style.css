@@ -144,6 +144,28 @@ body {
 .tk-chg.down { color: var(--down); }
 .tk-chg.flat { color: #b9c4d4; }
 
+/* ---------- Summary hero (今朝のまとめ画像) ---------- */
+.summary-hero { padding-top: 22px; }
+.summary-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.summary-head h2 { margin: 0; font-size: 17px; font-weight: 700; }
+.summary-head a {
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  color: var(--accent);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 6px 14px; transition: all .15s ease;
+}
+.summary-head a:hover { border-color: var(--accent); background: var(--chip-bg); }
+.summary-link { display: block; }
+.summary-hero img {
+  display: block; width: 100%; max-width: 560px; height: auto; margin: 0 auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
 /* ---------- Tabs ---------- */
 .tabs {
   display: flex;

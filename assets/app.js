@@ -51,6 +51,19 @@
   /* ---------- ヘッダー: 更新時刻 ---------- */
   document.getElementById("updated").textContent = formatUpdated(data.updated_at);
 
+  /* ---------- まとめ画像: 読み込めた場合だけ表示 ---------- */
+  (function () {
+    var hero = document.getElementById("summary-hero");
+    var img = document.getElementById("summary-img");
+    if (!hero || !img) return;
+    // HTTP配信時のみキャッシュ回避クエリを付ける（file:// では付けない）
+    var q = location.protocol === "file:" ? "" : "?v=" + encodeURIComponent(data.updated_at || Date.now());
+    img.src = "data/summary.png" + q;
+    document.getElementById("summary-download").href = "data/summary.png" + q;
+    img.addEventListener("load", function () { hero.hidden = false; });
+    img.addEventListener("error", function () { hero.hidden = true; });
+  })();
+
   /* ---------- 相場ティッカー ---------- */
   var ticker = document.getElementById("ticker");
   (data.market_snapshot || []).forEach(function (m) {
