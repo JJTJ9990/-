@@ -1,0 +1,243 @@
+/* ===========================================================================
+   経済ニュース ダッシュボード — スタイル
+   ライト/ダーク両対応。OSのテーマに追従しつつ、右上のボタンで手動切替も可能。
+   =========================================================================== */
+
+:root {
+  --bg: #f5f6f8;
+  --bg-elev: #ffffff;
+  --bg-header: #0f2540;
+  --text: #1a1f29;
+  --text-soft: #5b6472;
+  --text-inv: #eaf0f7;
+  --border: #e3e6ec;
+  --accent: #1f6feb;
+  --up: #d1343f;      /* 日本式: 上昇=赤 */
+  --down: #1c7c3c;    /* 日本式: 下落=緑 */
+  --flat: #7a828f;
+  --chip-bg: #eef2f8;
+  --chip-text: #33465f;
+  --shadow: 0 1px 3px rgba(16, 24, 40, .06), 0 1px 2px rgba(16, 24, 40, .04);
+  --radius: 14px;
+}
+
+:root[data-theme="dark"],
+:root:not([data-theme="light"]) {
+  /* fallback handled by media query below */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0e14;
+    --bg-elev: #151a23;
+    --bg-header: #0a1526;
+    --text: #e7ebf2;
+    --text-soft: #9aa4b2;
+    --text-inv: #eaf0f7;
+    --border: #232a36;
+    --accent: #4c9aff;
+    --up: #ff6b74;
+    --down: #4fd07f;
+    --flat: #7a828f;
+    --chip-bg: #1e2635;
+    --chip-text: #b9c4d4;
+    --shadow: 0 1px 3px rgba(0, 0, 0, .4);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0b0e14;
+  --bg-elev: #151a23;
+  --bg-header: #0a1526;
+  --text: #e7ebf2;
+  --text-soft: #9aa4b2;
+  --text-inv: #eaf0f7;
+  --border: #232a36;
+  --accent: #4c9aff;
+  --up: #ff6b74;
+  --down: #4fd07f;
+  --flat: #7a828f;
+  --chip-bg: #1e2635;
+  --chip-text: #b9c4d4;
+  --shadow: 0 1px 3px rgba(0, 0, 0, .4);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+    "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  background: var(--bg-header);
+  color: var(--text-inv);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 18px;
+  padding-bottom: 16px;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-mark { font-size: 34px; line-height: 1; }
+.brand-text h1 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: .02em; }
+.tagline { margin: 2px 0 0; font-size: 12.5px; color: #9fb2c9; }
+
+.header-side { display: flex; align-items: center; gap: 12px; }
+.updated { font-size: 12px; color: #9fb2c9; white-space: nowrap; }
+
+.theme-toggle {
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .18);
+  color: var(--text-inv);
+  border-radius: 999px;
+  width: 38px; height: 38px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.theme-toggle:hover { background: rgba(255, 255, 255, .2); }
+
+/* ---------- Ticker ---------- */
+.ticker {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, .18);
+  scrollbar-width: none;
+  font-size: 13px;
+}
+.ticker::-webkit-scrollbar { display: none; }
+.tk {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  white-space: nowrap;
+  color: #cdd8e6;
+}
+.tk-name { color: #8ea3bd; font-size: 12px; }
+.tk-val { font-weight: 700; color: #fff; }
+.tk-chg { font-size: 12px; font-weight: 600; }
+.tk-chg.up { color: var(--up); }
+.tk-chg.down { color: var(--down); }
+.tk-chg.flat { color: #b9c4d4; }
+
+/* ---------- Tabs ---------- */
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding-top: 18px;
+  padding-bottom: 4px;
+  flex-wrap: wrap;
+}
+.tab {
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text-soft);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.tab:hover { color: var(--text); border-color: var(--accent); }
+.tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ---------- Content ---------- */
+main.wrap { padding-top: 24px; padding-bottom: 48px; }
+.loading { color: var(--text-soft); padding: 40px 0; text-align: center; }
+
+.category { margin-bottom: 40px; scroll-margin-top: 130px; }
+.category-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+.category-head .ci { font-size: 22px; }
+.category-head h2 { margin: 0; font-size: 18px; font-weight: 700; }
+.category-head .count {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-soft);
+  background: var(--chip-bg);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.cards { display: grid; gap: 14px; }
+
+.card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  transition: transform .12s ease, border-color .12s ease;
+}
+.card:hover { transform: translateY(-2px); border-color: var(--accent); }
+
+.card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.chip {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 6px;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+}
+.card-date { font-size: 12px; color: var(--text-soft); margin-left: auto; }
+
+.card h3 { margin: 0 0 8px; font-size: 16.5px; font-weight: 700; line-height: 1.5; }
+.card h3 a { color: inherit; text-decoration: none; }
+.card h3 a:hover { color: var(--accent); text-decoration: underline; }
+.card p { margin: 0 0 12px; font-size: 14px; color: var(--text); }
+.card .source {
+  font-size: 12.5px;
+  color: var(--text-soft);
+}
+.card .source a { color: var(--accent); text-decoration: none; }
+.card .source a:hover { text-decoration: underline; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  background: var(--bg-elev);
+}
+.site-footer p { margin: 0; font-size: 12.5px; color: var(--text-soft); text-align: center; }
+
+@media (max-width: 560px) {
+  .brand-text h1 { font-size: 17px; }
+  .tagline { display: none; }
+  .updated { display: none; }
+}

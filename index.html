@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>経済ニュース ダッシュボード</title>
+  <meta name="description" content="日本・世界の主要経済ニュースをまとめる自分専用ダッシュボード" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%8A%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <span class="brand-mark">📊</span>
+        <div class="brand-text">
+          <h1>経済ニュース ダッシュボード</h1>
+          <p class="tagline">日本・世界の主要経済ニュースを毎朝おまとめ</p>
+        </div>
+      </div>
+      <div class="header-side">
+        <span id="updated" class="updated">読み込み中…</span>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="テーマ切替">🌓</button>
+      </div>
+    </div>
+    <div class="ticker" id="ticker" aria-label="相場サマリー"></div>
+  </header>
+
+  <nav class="tabs wrap" id="tabs"></nav>
+
+  <main class="wrap" id="content">
+    <div class="loading">ニュースを読み込んでいます…</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>本サイトは公開情報の要約であり、投資判断は自己責任で。データは毎朝自動更新されます。</p>
+    </div>
+  </footer>
+
+  <script src="data/news.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
