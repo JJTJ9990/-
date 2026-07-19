@@ -11,13 +11,14 @@
  * ---------------------------------------------------------------------------
  */
 window.NEWS_DATA = {
-  updated_at: "2026-07-18T08:00:00+09:00",
+  updated_at: "2026-07-19T07:20:00+09:00",
 
   market_snapshot: [
     { name: "日経平均", value: "64,141.12", change: "-2,694.42", change_pct: "-4.03%", dir: "down" },
     { name: "NYダウ", value: "52,146.42", change: "-406.55", change_pct: "-0.77%", dir: "down" },
-    { name: "ドル円", value: "162.38", change: "+0.9", change_pct: "円安", dir: "down" },
-    { name: "米10年債", value: "—", change: "利上げ観測", change_pct: "", dir: "flat" },
+    { name: "S&P500", value: "7,457.69", change: "-76.08", change_pct: "-1.01%", dir: "down" },
+    { name: "NASDAQ", value: "25,520.24", change: "-361.71", change_pct: "-1.40%", dir: "down" },
+    { name: "ドル円", value: "162.40", change: "+0.04", change_pct: "円安", dir: "down" },
     { name: "WTI原油", value: "高止まり", change: "$4/ガロン超", change_pct: "", dir: "up" }
   ],
 
